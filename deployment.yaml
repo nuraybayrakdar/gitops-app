@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: register-app-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: register-app
+  template:
+    metadata:
+      labels:
+        app: register-app
+    spec:
+      containers:
+      - name: register-app
+        image: nuraybayrakdar/repo1:latest
+        ports:
+        - containerPort: 8080
