@@ -34,7 +34,7 @@ pipeline {
         stage('Commit and Push Changes') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'GitHub-id', variable: 'GITHUB_TOKEN')]) {
+                    withCredentials([string(credentialsId: 'GitHub-id')]) {
                         // Configure Git user without email
                         sh "git config user.name 'nuraybayrakdar'"
                         
