@@ -37,11 +37,10 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'GitHub-id', usernameVariable: 'GITHUB_USERNAME', passwordVariable: 'GITHUB_TOKEN')]) {
                         sh "git config user.name 'nuraybayrakdar'"
                         sh "git config user.email 'bayrakdarnuray@gmail.com'"
-                        sh "git pull"
+                        sh "git pull origin main"
                         sh "git add deployment.yaml"
                         sh "git commit -m 'Update deployment.yaml with new Docker image: ${params.dockerImage}'"
                         sh "git checkout main"
-                        sh "git pull"
                         sh "git push https://nuraybayrakdar:${GITHUB_TOKEN}@github.com/nuraybayrakdar/gitops-app main"  
                     }
                 }
