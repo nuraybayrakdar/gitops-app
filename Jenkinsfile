@@ -41,7 +41,7 @@ pipeline {
                         sh "mv deployment.yaml gitops-app/"
                         sh "git add deployment.yaml"
                         sh "git commit -m 'Update deployment.yaml with new Docker image: ${params.dockerImage}'"
-                        sh "git remoote add origin https://nuraybayrakdar:${GITHUB_TOKEN}@github.com/nuraybayrakdar/gitops-app.git"
+                        sh "git remote add origin https://nuraybayrakdar:${GITHUB_TOKEN}@github.com/nuraybayrakdar/gitops-app.git"
                         sh "git push -u origin main"  
                     }
                 }
