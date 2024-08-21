@@ -40,7 +40,7 @@ pipeline {
                         sh "mv deployment.yaml gitops-app/"
                         sh "git add deployment.yaml"
                         sh "git commit -m 'Update deployment.yaml with new Docker image: ${params.dockerImage}'"
-                        sh "git push https://nuraybayrakdar:${GITHUB_TOKEN}@github.com/nuraybayrakdar/gitops-app.git main"  
+                        sh "git push https://nuraybayrakdar:${GITHUB_TOKEN}@github.com/nuraybayrakdar/gitops-app main"  
                     }
                 }
             }
