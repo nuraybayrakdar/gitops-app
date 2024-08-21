@@ -31,17 +31,41 @@ pipeline {
             }
         }
 
-        stage('Commit and Push Changes') {
+        stage('Prepare Repository') {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'GitHub-id', usernameVariable: 'GITHUB_USERNAME', passwordVariable: 'GITHUB_TOKEN')]) {
-                        sh "git config user.name 'nuraybayrakdar'"
-                        sh "git config user.email 'bayrakdarnuray@gmail.com'"
-                        sh "git pull origin cd"
-                        sh "git add ."
-                        sh "git commit -m 'Update deployment.yaml with new Docker image: ${params.dockerImage}'"
-                        sh "git checkout cd"
-                        sh "git push https://nuraybayrakdar:${GITHUB_TOKEN}@github.com/nuraybayrakdar/gitops-app cd"  
+                        def repoDir = "gitops-app"
+                        if (fileExists(repoDir)) {
+                            dir(repoDir) {
+                                sh "git pull origin cd"
+                            }
+                        } else {
+                            sh "git clone https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/nuraybayrakdar/gitops-app.git"
+                            dir(repoDir) {
+                                sh "git checkout cd"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        stage('Commit and Push Changes') {
+            steps {
+                script {
+                     withCredentials([usernamePassword(credentialsId: 'GitHub-id', usernameVariable: 'GITHUB_USERNAME', passwordVariable: 'GITHUB_TOKEN')]) {
+                        dir('gitops-app') {
+                            // Git ayarlarını yap
+                            sh "git config user.name 'nuraybayrakdar'"
+                            sh "git config user.email 'bayrakdarnuray@gmail.com'"
+
+                            // Değişiklikleri commit et ve pushla
+                            sh "git add ."
+                            sh "git commit -m 'Update deployment.yaml with new Docker image: ${params.dockerImage}' || echo 'No changes to commit'"
+                            sh "git push https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/nuraybayrakdar/gitops-app.git cd"
+                        }
                     }
                 }
             }
