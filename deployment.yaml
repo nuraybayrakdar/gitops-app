@@ -1,19 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app-deployment
+  name: website-deployment
+  labels:
+    app: website
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: app
+      app: website
   template:
     metadata:
       labels:
-        app: app
+        app: website
     spec:
       containers:
-      - name: app
-        image: nuraybayrakdar/repo1:latest
+      - name: website-container
+        image: <image_placeholder>
         ports:
-        - containerPort: 8080
+        - containerPort: 80
