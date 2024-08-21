@@ -38,14 +38,13 @@ pipeline {
                         def repoDir = "gitops-app"
                         if (fileExists(repoDir)) {
                             dir(repoDir) {
-                                sh "git checkout cd"
 
-                                sh "git pull origin cd"
+                                sh "git pull origin main"
                             }
                         } else {
                             sh "git clone https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/nuraybayrakdar/gitops-app.git"
                             dir(repoDir) {
-                                sh "git checkout cd"
+                                sh "git pull origin main"
                             }
                         }
                     }
@@ -66,7 +65,7 @@ pipeline {
                             // Değişiklikleri commit et ve pushla
                             sh "git add ."
                             sh "git commit -m 'Update deployment.yaml with new Docker image: ${params.dockerImage}' || echo 'No changes to commit'"
-                            sh "git push https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/nuraybayrakdar/gitops-app.git cd"
+                            sh "git push https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/nuraybayrakdar/gitops-app.git main"
                         }
                     }
                 }
