@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: website-container
-        image: <image_placeholder>
+        image: nuraybayrakdar/repo1:latest
         ports:
         - containerPort: 80
