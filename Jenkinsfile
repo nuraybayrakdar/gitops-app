@@ -38,6 +38,8 @@ pipeline {
                         def repoDir = "gitops-app"
                         if (fileExists(repoDir)) {
                             dir(repoDir) {
+                                sh "git checkout cd"
+
                                 sh "git pull origin cd"
                             }
                         } else {
