@@ -34,14 +34,15 @@ pipeline {
         stage('Commit and Push Changes') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'GitHub-id')]) {
-                        // Configure Git user without email
+                    withCredentials([usernamePassword(credentialsId: 'GitHub-id', usernameVariable: 'GITHUB_USERNAME', passwordVariable: 'GITHUB_TOKEN')]) {
+                        // Configure Git user
                         sh "git config user.name 'nuraybayrakdar'"
+                        sh "git config user.email 'bayrakdarnuray@gmail.com'"
                         
                         // Add, commit and push changes
                         sh "git add deployment.yaml"
                         sh "git commit -m 'Update deployment.yaml with new Docker image: ${params.dockerImage}'"
-                        sh "git push https://github.com/nuraybayrakdar/gitops-app.git main"  // Adjust URL and branch as needed
+                        sh "git push https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/nuraybayrakdar/gitops-app.git main"  // Adjust URL and branch as needed
                     }
                 }
             }
