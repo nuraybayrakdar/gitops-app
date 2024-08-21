@@ -31,12 +31,17 @@ pipeline {
             }
         }
 
-        stage('Deploy to Kubernetes') {
+        stage('Commit and Push Changes') {
             steps {
                 script {
-                    withCredentials([file(credentialsId: K8S_ID, variable: 'KUBECONFIG')]) {
-                        sh 'kubectl apply -f deployment.yaml'
-                        sh 'cat deployment.yaml'
+                    withCredentials([string(credentialsId: 'GitHub-id', variable: 'GITHUB_TOKEN')]) {
+                        // Configure Git user without email
+                        sh "git config user.name 'nuraybayrakdar'"
+                        
+                        // Add, commit and push changes
+                        sh "git add deployment.yaml"
+                        sh "git commit -m 'Update deployment.yaml with new Docker image: ${params.dockerImage}'"
+                        sh "git push https://github.com/nuraybayrakdar/gitops-app.git main"  // Adjust URL and branch as needed
                     }
                 }
             }
