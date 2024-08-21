@@ -25,6 +25,7 @@ pipeline {
             steps {
                 script {
                     sh "sed -i 's|<image_placeholder>|${params.dockerImage}|g' deployment.yaml"
+                    echo "${params.dockerImage}"
                     sh "cat deployment.yaml"
                 }
             }
